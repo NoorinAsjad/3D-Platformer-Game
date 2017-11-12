@@ -9,4 +9,9 @@ public class RotateScript : MonoBehaviour {
 		transform.Rotate (Vector3.up*rotationSpeed);
 
 	}
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(gameObject);
+    }
 }
