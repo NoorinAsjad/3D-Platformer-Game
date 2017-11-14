@@ -8,7 +8,9 @@ public class PlayerJumpTest : MonoBehaviour
 	Rigidbody rb;
 	bool jump = false;
     bool run = false;
-    float bufferSpeed = 2f;
+    float bufferAxisSpeed = 2f;
+    float jumpSpeed = 250f;
+    public AudioSource coinSound;
 
 	void Start ()
 	{
@@ -20,12 +22,12 @@ public class PlayerJumpTest : MonoBehaviour
     
 	void Update ()
 	{
-        float translation = Input.GetAxis("Vertical") * bufferSpeed;
-        float rotation = Input.GetAxis("Horizontal") * bufferSpeed;
-        bool keysPressed = Input.GetKeyDown("a") || Input.GetKeyDown("d") 
+        float translation = Input.GetAxis("Vertical") * bufferAxisSpeed;
+        float rotation = Input.GetAxis("Horizontal") * bufferAxisSpeed;
+        /*bool keysPressed = Input.GetKeyDown("a") || Input.GetKeyDown("d") 
             || Input.GetKeyDown("w") || Input.GetKeyDown("s")
             || Input.GetKeyDown("right") || Input.GetKeyDown("left") 
-            || Input.GetKeyDown("up") || Input.GetKeyDown("down");
+            || Input.GetKeyDown("up") || Input.GetKeyDown("down");*/
 
         if (Mathf.Abs(translation)<0.005f || Mathf.Abs(rotation) < 0.005f)
         {
@@ -56,7 +58,7 @@ public class PlayerJumpTest : MonoBehaviour
                 jump = true;
                 anim.SetBool("jump", true);
                 anim.SetBool("land", false);
-                rb.AddForce(Vector3.up * 200);
+                rb.AddForce(Vector3.up * jumpSpeed);
             }
         }
 	}
@@ -81,6 +83,19 @@ public class PlayerJumpTest : MonoBehaviour
         run = false;
     }
 
-   
-	
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.CompareTag("Coin"))
+        {
+            Destroy(other.gameObject);
+            coinSound.Play();
+            GameManager.instance.IncreaseScore(10);
+
+        }
+        
+    }
+
+
 }

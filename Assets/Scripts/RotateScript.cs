@@ -10,8 +10,4 @@ public class RotateScript : MonoBehaviour {
 
 	}
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Destroy(gameObject);
-    }
 }
