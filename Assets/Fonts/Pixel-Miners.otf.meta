@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 5f5225cca4948474b9566b7890896d34
+timeCreated: 1510700497
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Pixel Miners
+  fontNames:
+  - Pixel Miners
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 2
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

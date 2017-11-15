@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: eb6ac7baa7bea8540afed71bcd1f6e20
+timeCreated: 1510688773
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: PacFont Good
+  fontNames:
+  - PacFont Good
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

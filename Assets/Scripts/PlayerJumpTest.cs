@@ -3,20 +3,19 @@ using System.Collections;
 
 public class PlayerJumpTest : MonoBehaviour
 {
-	
-	Animator anim;
-	Rigidbody rb;
+    float mass = 3.0F; // defines the character mass
+    Vector3 impact = Vector3.zero;
+    CharacterController character;
+    Animator anim;
 	bool jump = false;
     bool run = false;
     float bufferAxisSpeed = 2f;
     float jumpSpeed = 250f;
-    public AudioSource coinSound;
 
 	void Start ()
 	{
-		
 		anim = GetComponent<Animator> ();
-		rb = GetComponent<Rigidbody> ();
+        character = GetComponent<CharacterController>();
 
     }
     
@@ -24,10 +23,6 @@ public class PlayerJumpTest : MonoBehaviour
 	{
         float translation = Input.GetAxis("Vertical") * bufferAxisSpeed;
         float rotation = Input.GetAxis("Horizontal") * bufferAxisSpeed;
-        /*bool keysPressed = Input.GetKeyDown("a") || Input.GetKeyDown("d") 
-            || Input.GetKeyDown("w") || Input.GetKeyDown("s")
-            || Input.GetKeyDown("right") || Input.GetKeyDown("left") 
-            || Input.GetKeyDown("up") || Input.GetKeyDown("down");*/
 
         if (Mathf.Abs(translation)<0.005f || Mathf.Abs(rotation) < 0.005f)
         {
@@ -47,23 +42,33 @@ public class PlayerJumpTest : MonoBehaviour
             
         }
 
-        
-        
+        if (impact.magnitude > 0.2F) character.Move(impact * Time.deltaTime);
+        // consumes the impact energy each cycle:
+        impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
 
 
-        if (Input.GetKeyDown("space"))
+        if (Input.GetMouseButtonDown(0))
         {
             if (!jump)
             {
                 jump = true;
                 anim.SetBool("jump", true);
                 anim.SetBool("land", false);
-                rb.AddForce(Vector3.up * jumpSpeed);
+                AddImpact(Vector3.up, 20f);
             }
         }
 	}
 
-	void OnCollisionEnter ()
+    // call this function to add an impact force:
+    public void AddImpact(Vector3 dir, float force)
+    {
+        dir.Normalize();
+        if (dir.y < 0) dir.y = -dir.y; // reflect down force on the ground
+        impact += dir.normalized * force / mass;
+    }
+
+
+    void OnCollisionEnter ()
 	{
 
 		if (jump) {
@@ -82,20 +87,5 @@ public class PlayerJumpTest : MonoBehaviour
     {
         run = false;
     }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-
-        if (other.CompareTag("Coin"))
-        {
-            Destroy(other.gameObject);
-            coinSound.Play();
-            GameManager.instance.IncreaseScore(10);
-
-        }
-        
-    }
-
 
 }
