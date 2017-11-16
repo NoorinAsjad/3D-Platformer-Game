@@ -51,14 +51,30 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void DecreaseLives()
+    public void UpdateLives(int num)
     {
-        if (lives>0)
-            lives--;
-        if (hudManager != null)
+        if (lives > 0)
         {
-            hudManager.UpdateLivesUI();
+            lives += num;
+            if (num < 0)
+            {
+                ReloadScene();
+            }
+            else
+            {
+                if (healthbar != null)
+                {
+                    Debug.Log("UpdateLives called");
+                    healthbar.UpdateLives();
+                }
+            }
         }
+        else
+        {
+            GameOver();
+        }
+        
+        
     }
 
     //resets the game to level 1
@@ -67,11 +83,16 @@ public class GameManager : MonoBehaviour {
         score = 0;
         lives = 3;
         currentLevel = 1;
-        health = 100f;
+        health = maxHealth;
         SceneManager.LoadScene("Level 1");
         if (hudManager != null)
         {
             hudManager.UpdateScoresUI();
+        }
+        if (healthbar != null)
+        {
+            healthbar.UpdateHealth(0);
+            healthbar.UpdateLives();
         }
     }
 
@@ -80,16 +101,40 @@ public class GameManager : MonoBehaviour {
         if (currentLevel < HIGHESTLEVEL)
         {
             currentLevel++;
+            health = maxHealth;
             SceneManager.LoadScene("Level " + currentLevel);
             if (hudManager != null)
             {
                 hudManager.UpdateScoresUI();
+            }
+            if (healthbar != null)
+            {
+                healthbar.UpdateHealth(0);
+                healthbar.UpdateLives();
             }
         } else
         {
             GameOver();
         }
         
+    }
+
+    //reloads the current scene if the lives decrease
+    public void ReloadScene()
+    {
+        health = maxHealth;
+        score = 0;
+        SceneManager.LoadScene("Level " + currentLevel);
+        if (hudManager != null)
+        {
+            hudManager.UpdateScoresUI();
+        }
+        if (healthbar != null)
+        {
+            healthbar.UpdateHealth(0);
+            healthbar.UpdateLives();
+        }
+    
     }
 
     public void GameOver()
@@ -99,10 +144,8 @@ public class GameManager : MonoBehaviour {
 
     public void UpdateHealth(float amount)
     {
-        Debug.Log("UpdateHealthCalled");
         if (healthbar != null)
         {
-            Debug.Log("UpdateHealth of healhbar called");
             healthbar.UpdateHealth(amount);
         }
        

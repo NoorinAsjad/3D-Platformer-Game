@@ -20,7 +20,7 @@ public class PlayerRunScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         vAxis = Input.GetAxis("Vertical");
         hAxis = Input.GetAxis("Horizontal");
         Vector3 change = new Vector3(-hAxis * runningSpeed * Time.deltaTime, 0, -vAxis * runningSpeed * Time.deltaTime);

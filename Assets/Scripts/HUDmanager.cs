@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class HUDmanager : MonoBehaviour {
 
     public Text score;
-    public Text lives;
 
 	// Use this for initialization
 	void Start () {
@@ -17,13 +16,4 @@ public class HUDmanager : MonoBehaviour {
         score.text = "SCORE: " + GameManager.instance.score.ToString();
 	}
 
-    public void UpdateLivesUI ()
-    {
-        string lifeString = "";
-        for (int i = 0; i < GameManager.instance.lives; i++)
-        {
-            lifeString = " ❤️";
-        }
-        lives.text = lifeString;
-    }
 }

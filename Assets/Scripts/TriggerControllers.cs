@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TriggerControllers : MonoBehaviour {
-    AudioSource coinSound;
+    public AudioSource coinSound, firstAidSound, spikeHitSound, slimeZapSound, lifeIncreasedSound;
 
     // Use this for initialization
     void Start () {
-        coinSound = FindObjectOfType<AudioSource>();
+        
 	}
 
     private void OnTriggerEnter(Collider other)
@@ -21,15 +21,35 @@ public class TriggerControllers : MonoBehaviour {
 
         }
 
-        if (other.CompareTag("GameOver"))
-        {
-            GameManager.instance.GameOver();
-        }
-
         if (other.CompareTag("Spikes"))
         {
-            Debug.Log("Spikes");
-            GameManager.instance.UpdateHealth(-15f);
+            spikeHitSound.Play();
+            GameManager.instance.UpdateHealth(-5f);
+        }
+
+        if (other.CompareTag("First Aid"))
+        {
+            Destroy(other.gameObject);
+            firstAidSound.Play();
+            GameManager.instance.UpdateHealth(10f);
+        }
+
+        if (other.CompareTag("Slime"))
+        {
+            slimeZapSound.Play();
+            GameManager.instance.UpdateHealth(-5f);
+        }
+
+        if (other.CompareTag("Heart"))
+        {
+            lifeIncreasedSound.Play();
+            Destroy(other.gameObject);
+            GameManager.instance.UpdateLives(1);
+        }
+
+        if (other.CompareTag("Star"))
+        {
+            GameManager.instance.IncreaseLevel();
         }
 
     }

@@ -9,8 +9,10 @@ public class PlayerJumpTest : MonoBehaviour
     Animator anim;
 	bool jump = false;
     bool run = false;
+    bool jumping = false;
     float bufferAxisSpeed = 2f;
-    float jumpSpeed = 250f;
+    public AudioSource DeathSound;
+
 
 	void Start ()
 	{
@@ -19,7 +21,7 @@ public class PlayerJumpTest : MonoBehaviour
 
     }
     
-	void Update ()
+	void FixedUpdate ()
 	{
         float translation = Input.GetAxis("Vertical") * bufferAxisSpeed;
         float rotation = Input.GetAxis("Horizontal") * bufferAxisSpeed;
@@ -45,21 +47,62 @@ public class PlayerJumpTest : MonoBehaviour
         if (impact.magnitude > 0.2F) character.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
         impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
+         // call this function to add an impact force:
+    
+       
 
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown("space"))
         {
             if (!jump)
             {
                 jump = true;
+                jumping = true;
                 anim.SetBool("jump", true);
                 anim.SetBool("land", false);
-                AddImpact(Vector3.up, 20f);
+                AddImpact(Vector3.up,20f);
+                Invoke("JumpReset", 0.40f);
+                Invoke("OnBeingGrounded", 0.45f);
+                Invoke("JumpingReset", 0.70f);
             }
         }
-	}
 
-    // call this function to add an impact force:
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, Mathf.Infinity))
+        {
+            //Debug.DrawLine(transform.position, hit.point, Color.red);
+            if (!jumping && hit.collider.CompareTag("platform"))
+            {
+                
+                transform.position = new Vector3(transform.position.x, hit.point.y, transform.position.z);
+            }
+            if (!jumping && hit.collider.CompareTag("Ground"))
+            {
+                if (hit.distance > 0.15f)
+                {
+                    transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y,hit.point.y, 0.25f), transform.position.z);
+                }
+            }
+            if (!jumping && hit.collider.CompareTag("Death"))
+            {
+                if (hit.distance > 0.15f)
+                {
+                    DeathSound.Play();
+                    AddImpact(Vector3.down, -20f);
+                    Invoke("Death", 1.5f);
+                }
+
+            }
+
+        }
+        
+    }
+
+    void Death()
+    {
+        GameManager.instance.UpdateLives(-1);
+    }
+
     public void AddImpact(Vector3 dir, float force)
     {
         dir.Normalize();
@@ -67,25 +110,23 @@ public class PlayerJumpTest : MonoBehaviour
         impact += dir.normalized * force / mass;
     }
 
+    void OnBeingGrounded()
+    {
+        anim.SetBool("jump", false);
+        anim.SetBool("land", true);
 
-    void OnCollisionEnter ()
-	{
-
-		if (jump) {
-			Invoke ("JumpReset", 0.25f);
-			anim.SetBool ("jump", false);
-			anim.SetBool ("land", true);
-		}
-	}
+    }
 
 	void JumpReset ()
 	{
+        
+        AddImpact(Vector3.down, -25f);
 		jump = false;
 	}
 
-    void RunReset()
+    void JumpingReset()
     {
-        run = false;
+       
+        jumping = false;
     }
-
 }

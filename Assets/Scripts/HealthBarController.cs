@@ -7,13 +7,18 @@ public class HealthBarController : MonoBehaviour {
     float maxHealth;
     float health;
     public Image bar;
+    public Text numLives;
+    bool HealthFinished = false;
+    public AudioSource DeathSound;
 
     private void Start()
     {
         maxHealth = GameManager.instance.maxHealth;
         health = GameManager.instance.health;
         UpdateHealth(0f);
+        UpdateLives();
     }
+
 
     float mapToMaxHealth(float value)
     {
@@ -23,10 +28,39 @@ public class HealthBarController : MonoBehaviour {
     // Update is called once per frame
     public void UpdateHealth (float amount)
     {
-        
-        float newHealth = mapToMaxHealth(health+amount);
-        Debug.Log(newHealth);
-        bar.fillAmount = Mathf.Lerp(mapToMaxHealth(health), newHealth, Time.deltaTime*5);
-        health += amount;
+        if (!HealthFinished)
+        {
+            float newHealth = mapToMaxHealth(health + amount);
+            if (newHealth > 1)
+            {
+                newHealth = 1;
+            }
+            else if (newHealth < 0)
+            {
+                newHealth = 0;
+            }
+            bar.fillAmount = Mathf.Lerp(mapToMaxHealth(health), newHealth, 0.65f);
+            health += amount;
+            if (health <= 0)
+            {
+                DeathSound.Play();
+                HealthFinished = true;
+                Invoke("Death", 2.0f);
+
+            }
+        }
     }
+
+    public void UpdateLives ()
+    {
+        int num = GameManager.instance.lives;
+        numLives.text = ""+num;
+        Debug.Log(numLives.text);
+    }
+
+    void Death()
+    {
+        GameManager.instance.UpdateLives(-1);
+    }
+
 }

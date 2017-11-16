@@ -46,8 +46,8 @@ public class CameraController : MonoBehaviour {
 
         if (Input.GetMouseButton(1))
         {
-            mouseX += Input.GetAxis("Mouse X");
-            mouseY -= Input.GetAxis("Mouse Y");
+            mouseX -= Input.GetAxis("Mouse X");
+            mouseY += Input.GetAxis("Mouse Y");
         }
 
         mouseY = Mathf.Clamp(mouseY, -60f, 60f);
@@ -57,12 +57,12 @@ public class CameraController : MonoBehaviour {
         moveFB = Input.GetAxis("Vertical") * moveSpeed;
         moveLR = Input.GetAxis("Horizontal") * moveSpeed;
 
-        Vector3 movement = new Vector3(moveLR, 0, moveFB);
+        Vector3 movement = new Vector3(moveLR, 0f, moveFB);
         movement = character.rotation * movement;
         character.GetComponent<CharacterController>().Move(movement * Time.deltaTime);
         centerPoint.position = new Vector3(character.position.x, character.position.y + mouseYPosition, character.position.z);
 
-        if (Input.GetAxis("Vertical") > 0 | Input.GetAxis("Vertical") < 0)
+        if (Input.GetAxis("Vertical") != 0)
         {
 
             Quaternion turnAngle = Quaternion.Euler(0, centerPoint.eulerAngles.y, 0);
