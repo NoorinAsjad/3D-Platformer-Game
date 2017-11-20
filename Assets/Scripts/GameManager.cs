@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour {
     public float health = 100f;
 
     HUDmanager hudManager;
+
+    RespawnBehavior respawner;
+
     public static GameManager instance;
 
     private void Awake()
@@ -28,12 +31,14 @@ public class GameManager : MonoBehaviour {
         {
             instance.healthbar = FindObjectOfType<HealthBarController>();
             instance.hudManager = FindObjectOfType<HUDmanager>();
+            instance.respawner = FindObjectOfType<RespawnBehavior>();
             Destroy(gameObject);
         }
 
         DontDestroyOnLoad(gameObject);
         hudManager = FindObjectOfType<HUDmanager>();
         healthbar = FindObjectOfType<HealthBarController>();
+        respawner = FindObjectOfType<RespawnBehavior>();
     }
 
     public void IncreaseScore(int amount)
@@ -51,6 +56,14 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void AssignInitialHealth()
+    {
+        health = maxHealth;
+        healthbar.AssignInitialHealth();
+        healthbar.UpdateHealth(0);
+        
+    }
+
     public void UpdateLives(int num)
     {
         if (lives > 0)
@@ -58,7 +71,11 @@ public class GameManager : MonoBehaviour {
             lives += num;
             if (num < 0)
             {
-                ReloadScene();
+                //lives decrease, so respawn
+                respawner.RespawnAtCheckpoint();
+                hudManager.UpdateScoresUI();
+                healthbar.UpdateLives();
+                
             }
             else
             {
@@ -93,6 +110,11 @@ public class GameManager : MonoBehaviour {
         {
             healthbar.UpdateHealth(0);
             healthbar.UpdateLives();
+        }
+
+        if (respawner != null)
+        {
+            //do sth??
         }
     }
 

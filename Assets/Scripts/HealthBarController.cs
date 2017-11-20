@@ -9,7 +9,6 @@ public class HealthBarController : MonoBehaviour {
     public Image bar;
     public Text numLives;
     bool HealthFinished = false;
-    public AudioSource DeathSound;
 
     private void Start()
     {
@@ -17,6 +16,12 @@ public class HealthBarController : MonoBehaviour {
         health = GameManager.instance.health;
         UpdateHealth(0f);
         UpdateLives();
+    }
+
+    public void AssignInitialHealth()
+    {
+        health = GameManager.instance.maxHealth;
+        HealthFinished = false;
     }
 
 
@@ -39,13 +44,13 @@ public class HealthBarController : MonoBehaviour {
             {
                 newHealth = 0;
             }
-            bar.fillAmount = Mathf.Lerp(mapToMaxHealth(health), newHealth, 0.65f);
+            Debug.Log(newHealth);
+            bar.fillAmount = newHealth;
             health += amount;
             if (health <= 0)
             {
-                DeathSound.Play();
                 HealthFinished = true;
-                Invoke("Death", 2.0f);
+                GameManager.instance.UpdateLives(-1);
 
             }
         }
@@ -55,12 +60,6 @@ public class HealthBarController : MonoBehaviour {
     {
         int num = GameManager.instance.lives;
         numLives.text = ""+num;
-        Debug.Log(numLives.text);
-    }
-
-    void Death()
-    {
-        GameManager.instance.UpdateLives(-1);
     }
 
 }

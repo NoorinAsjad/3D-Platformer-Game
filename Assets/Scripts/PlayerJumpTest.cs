@@ -87,9 +87,8 @@ public class PlayerJumpTest : MonoBehaviour
             {
                 if (hit.distance > 0.15f)
                 {
-                    DeathSound.Play();
                     AddImpact(Vector3.down, -20f);
-                    Invoke("Death", 1.5f);
+                    GameManager.instance.UpdateLives(-1);
                 }
 
             }
@@ -100,7 +99,7 @@ public class PlayerJumpTest : MonoBehaviour
 
     void Death()
     {
-        GameManager.instance.UpdateLives(-1);
+        
     }
 
     public void AddImpact(Vector3 dir, float force)

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class TriggerControllers : MonoBehaviour {
     public AudioSource coinSound, firstAidSound, spikeHitSound, slimeZapSound, lifeIncreasedSound;
+    RespawnBehavior respawnBehavior;
 
     // Use this for initialization
     void Start () {
-        
+        respawnBehavior = FindObjectOfType<RespawnBehavior>();        
 	}
 
     private void OnTriggerEnter(Collider other)
@@ -24,7 +25,7 @@ public class TriggerControllers : MonoBehaviour {
         if (other.CompareTag("Spikes"))
         {
             spikeHitSound.Play();
-            GameManager.instance.UpdateHealth(-5f);
+            GameManager.instance.UpdateHealth(-25f);
         }
 
         if (other.CompareTag("First Aid"))
@@ -49,7 +50,15 @@ public class TriggerControllers : MonoBehaviour {
 
         if (other.CompareTag("Star"))
         {
-            GameManager.instance.IncreaseLevel();
+            int score = GameManager.instance.score;
+            respawnBehavior.AssignCheckpoints(other.gameObject.transform.position, score);
+            Destroy(other.gameObject);
+        }
+
+        if (other.CompareTag("GameOver"))
+        {
+            Debug.Log("Gameover touched");
+            respawnBehavior.RespawnAtCheckpoint();
         }
 
     }
