@@ -1,33 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OpenAnimTest: MonoBehaviour {
+public class OpenAnimTest : MonoBehaviour
+{
 
-	Animator anim;
-	bool open = false;
+    Animator anim;
+    bool open = false;
 
-	// Use this for initialization
-	void Start () {
-	
-		anim = GetComponent<Animator>();
+    // Use this for initialization
+    void Start()
+    {
 
-	}
+        anim = GetComponent<Animator>();
 
-	void OnMouseDown(){
+    }
 
-		if (!open){
+    void OnMouseDown()
+    {
 
-			open = true;
-			anim.SetBool("open", open);
+        if (!open)
+        {
 
-		} else {
+            open = true;
+            anim.SetBool("open", open);
 
-			open = false;
-			anim.SetBool("open", open);
+        }
+        else
+        {
+
+            open = false;
+            anim.SetBool("open", open);
 
 
-		}
+        }
 
-	}
+    }
 
 }

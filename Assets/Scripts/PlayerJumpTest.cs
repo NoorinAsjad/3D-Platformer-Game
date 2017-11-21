@@ -10,6 +10,7 @@ public class PlayerJumpTest : MonoBehaviour
 	bool jump = false;
     bool run = false;
     bool jumping = false;
+    bool death = false;
     float bufferAxisSpeed = 2f;
     public AudioSource DeathSound;
 
@@ -88,7 +89,12 @@ public class PlayerJumpTest : MonoBehaviour
                 if (hit.distance > 0.15f)
                 {
                     AddImpact(Vector3.down, -20f);
-                    GameManager.instance.UpdateLives(-1);
+                    if (!death)
+                    {
+                        GameManager.instance.UpdateHealth(-GameManager.instance.maxHealth);
+                        death = true;
+                        Invoke("deathReset", 3.5f);
+                    }
                 }
 
             }
@@ -97,9 +103,9 @@ public class PlayerJumpTest : MonoBehaviour
         
     }
 
-    void Death()
+    void deathReset ()
     {
-        
+        death = false;
     }
 
     public void AddImpact(Vector3 dir, float force)

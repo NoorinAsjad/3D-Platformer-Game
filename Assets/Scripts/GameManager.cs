@@ -56,12 +56,18 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    //Assigns initial health to the HealthBarController when respawner is called
     public void AssignInitialHealth()
     {
         health = maxHealth;
         healthbar.AssignInitialHealth();
         healthbar.UpdateHealth(0);
         
+    }
+
+    public void UpdateInformativeText(string text)
+    {
+        hudManager.UpdateInformativeText(text);
     }
 
     public void UpdateLives(int num)
@@ -79,6 +85,7 @@ public class GameManager : MonoBehaviour {
             }
             else
             {
+                //lives increase
                 if (healthbar != null)
                 {
                     Debug.Log("UpdateLives called");
@@ -110,11 +117,6 @@ public class GameManager : MonoBehaviour {
         {
             healthbar.UpdateHealth(0);
             healthbar.UpdateLives();
-        }
-
-        if (respawner != null)
-        {
-            //do sth??
         }
     }
 
@@ -164,6 +166,7 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene("Game Over");
     }
 
+    //updates the healthbar UI
     public void UpdateHealth(float amount)
     {
         if (healthbar != null)

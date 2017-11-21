@@ -44,7 +44,6 @@ public class HealthBarController : MonoBehaviour {
             {
                 newHealth = 0;
             }
-            Debug.Log(newHealth);
             bar.fillAmount = newHealth;
             health += amount;
             if (health <= 0)
