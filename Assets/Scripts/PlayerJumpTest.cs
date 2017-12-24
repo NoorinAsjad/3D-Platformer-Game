@@ -27,14 +27,14 @@ public class PlayerJumpTest : MonoBehaviour
         float translation = Input.GetAxis("Vertical") * bufferAxisSpeed;
         float rotation = Input.GetAxis("Horizontal") * bufferAxisSpeed;
 
-        if (Mathf.Abs(translation)<0.005f || Mathf.Abs(rotation) < 0.005f)
+        if (Mathf.Abs(translation)<0.05f || Mathf.Abs(rotation) < 0.05f)
         {
             run = false;
             anim.SetBool("run", false);
             anim.SetBool("idle", true);
         }
 
-        if (Mathf.Abs(translation)>=0.005f || Mathf.Abs(rotation) >= 0.005f)
+        if (Mathf.Abs(translation)>=0.05f || Mathf.Abs(rotation) >= 0.05f)
         {
             if (!run)
             {
@@ -62,9 +62,9 @@ public class PlayerJumpTest : MonoBehaviour
                 anim.SetBool("jump", true);
                 anim.SetBool("land", false);
                 AddImpact(Vector3.up,20f);
-                Invoke("JumpReset", 0.40f);
-                Invoke("OnBeingGrounded", 0.45f);
-                Invoke("JumpingReset", 0.70f);
+                Invoke("JumpReset", 0.50f);
+                Invoke("OnBeingGrounded", 0.55f);
+                Invoke("JumpingReset", 0.80f);
             }
         }
 

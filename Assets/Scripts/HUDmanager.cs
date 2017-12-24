@@ -6,27 +6,40 @@ using UnityEngine.UI;
 public class HUDmanager : MonoBehaviour {
 
     public Text score;
-    public Text information;
+    public Text information1;
+    public Text information2;
 
     // Use this for initialization
     void Start () {
         UpdateScoresUI();
-        UpdateInformativeText("");
+        UpdateInformation1Text("");
+        UpdateInformation2Text("");
 	}
 	
 	public void UpdateScoresUI () {
-        score.text = "SCORE: " + GameManager.instance.score.ToString();
+        score.text = "Score " + GameManager.instance.score.ToString();
 	}
 
-    public void UpdateInformativeText(string text)
+    public void UpdateInformation1Text(string text)
     {
-        information.text = text;
-        Invoke("RemoveText", 1.5f);
+        information1.text = text;
+        Invoke("RemoveTimeText", 1.5f);
     }
 
-    void RemoveText()
+    public void UpdateInformation2Text(string text)
     {
-        information.text = "";
+        information2.text = text;
+        Invoke("RemoveScoreText", 1.5f);
+    }
+
+    void RemoveTimeText()
+    {
+        information1.text = "";
+    }
+
+    void RemoveScoreText()
+    {
+        information2.text = "";
     }
 
 }

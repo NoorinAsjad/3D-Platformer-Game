@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour {
     public float zoomMin = -1f;
     public float zoomMax = -3f;
 
-    public float rotationSpeed = 5f;
+    public float rotationSpeed = 30f;
 
 
 
@@ -44,18 +44,17 @@ public class CameraController : MonoBehaviour {
 
         playerCam.transform.localPosition = new Vector3(0, 0, zoom);
 
-        if (Input.GetMouseButton(1))
-        {
-            mouseX -= Input.GetAxis("Mouse X");
-            mouseY += Input.GetAxis("Mouse Y");
-        }
+        //if (Input.GetMouseButton(1))
+            mouseX += Input.GetAxisRaw("Mouse X");
+            mouseY -= Input.GetAxisRaw("Mouse Y");
+            
 
         mouseY = Mathf.Clamp(mouseY, -60f, 60f);
         playerCam.LookAt(centerPoint);
         centerPoint.localRotation = Quaternion.Euler(mouseY, mouseX, 0);
 
-        moveFB = Input.GetAxis("Vertical") * moveSpeed;
-        moveLR = Input.GetAxis("Horizontal") * moveSpeed;
+        moveFB = Input.GetAxisRaw("Vertical") * moveSpeed;
+        moveLR = Input.GetAxisRaw("Horizontal") * moveSpeed;
 
         Vector3 movement = new Vector3(moveLR, 0f, moveFB);
         movement = character.rotation * movement;

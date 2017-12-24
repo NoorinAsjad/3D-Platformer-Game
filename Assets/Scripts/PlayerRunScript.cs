@@ -28,27 +28,7 @@ public class PlayerRunScript : MonoBehaviour {
         rb.MovePosition(newPosition);
         
         transform.position = transform.position+change;
-        /*
-        if (Input.GetKeyDown("a") || Input.GetKeyDown("left"))
-        {
-            turnLeft();
-        }
-
-        if (Input.GetKeyDown("d") || Input.GetKeyDown("right"))
-        {
-            turnRight();
-        }
-
-        if (Input.GetKeyDown("w") || Input.GetKeyDown("up"))
-        {
-            turnFront();
-        }
-
-        if (Input.GetKeyDown("s") || Input.GetKeyDown("down"))
-        {
-            turnBack();
-        }*/
-
+        
         if (Input.GetKeyDown("escape"))
         {
             if (cursorLockState)

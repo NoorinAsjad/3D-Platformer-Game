@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class TriggerControllers : MonoBehaviour {
     public AudioSource coinSound, firstAidSound, spikeHitSound, 
-        slimeZapSound, lifeIncreasedSound, checkpointSound;
+        slimeZapSound, lifeIncreasedSound, checkpointSound, diamondSound, levelUpSound;
     RespawnBehavior respawnBehavior;
+    int coins;
     
 
     // Use this for initialization
@@ -20,15 +21,23 @@ public class TriggerControllers : MonoBehaviour {
         if (other.CompareTag("Coin"))
         {
             Destroy(other.gameObject);
+            coins++;
             coinSound.Play();
             GameManager.instance.IncreaseScore(10);
 
+            if (coins == 6)
+            {
+                GameManager.instance.IncreaseTimer(3f);
+                coins = 0;
+                GameManager.instance.UpdateInformativeText("+3s");
+                Invoke("cancelTime", 0.55f);
+            }
         }
 
         if (other.CompareTag("Spikes"))
         {
             spikeHitSound.Play();
-            GameManager.instance.UpdateHealth(-7f);
+            GameManager.instance.UpdateHealth(-12f);
         }
 
         if (other.CompareTag("First Aid"))
@@ -56,17 +65,22 @@ public class TriggerControllers : MonoBehaviour {
         if (other.CompareTag("Star"))
         {
             checkpointSound.Play();
-            int score = GameManager.instance.score;
-            respawnBehavior.AssignCheckpoints(other.gameObject.transform.position, score);
+            respawnBehavior.AssignCheckpoints(other.gameObject.transform.position);
             GameManager.instance.UpdateInformativeText("Checkpoint!");
             Destroy(other.gameObject);
            
         }
 
-        if (other.CompareTag("GameOver"))
+        if (other.CompareTag("Diamond"))
         {
-            Debug.Log("Gameover touched");
-            respawnBehavior.RespawnAtCheckpoint();
+            diamondSound.Play();
+            GameManager.instance.UpdateInformativeText("+50!!!");
+            GameManager.instance.UpdateSecondInformativeText("+20seconds!!");
+            GameManager.instance.IncreaseScore(50);
+            Destroy(other.gameObject);
+            GameManager.instance.IncreaseTimer(20f);
+            Invoke("cancelTime", 0.55f);
+
         }
 
         if (other.CompareTag("Box"))
@@ -75,10 +89,25 @@ public class TriggerControllers : MonoBehaviour {
             Destroy(other.gameObject);
         }
 
+        if (other.CompareTag("GameOver"))
+        {
+            levelUpSound.Play();
+            Destroy(other.gameObject);
+            GameManager.instance.UpdateInformativeText("Level up!!");
+            Invoke("increaseLevel", 0.9f);
+        }
+
 
     }
+
+    void increaseLevel()
+    {
+        GameManager.instance.IncreaseLevel();
+    }
+
+    void cancelTime()
+    {
+        GameManager.instance.IncreaseTimer();
+    }
     
-
-
-
 }

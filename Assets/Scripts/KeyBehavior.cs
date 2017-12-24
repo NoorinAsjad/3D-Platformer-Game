@@ -28,6 +28,10 @@ public class KeyBehavior : MonoBehaviour {
                 GameManager.instance.UpdateInformativeText("Key Collected!");
                 other.transform.position = keySpawnpoint.transform.position;
                 hasKey = true;
+                if (keySpawnpoint.transform.childCount!=0)
+                {
+                    Destroy(keySpawnpoint.transform.GetChild(0).gameObject);
+                }
             }
             else
             {
@@ -37,16 +41,9 @@ public class KeyBehavior : MonoBehaviour {
                 {
                     open = true;
                     anim.SetBool("open", open);
-                    Invoke("OpenReset", 5.0f);
                     
                 }
             }
         }
-    }
-
-    void OpenReset()
-    {
-        open = false;
-        anim.SetBool("open", open);
     }
 }

@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour {
 
     RespawnBehavior respawner;
 
+    DeathSoundBehavior deathSound;
+    AudioSource deathAudio;
+
+    public float time;
+
     public static GameManager instance;
 
     private void Awake()
@@ -32,6 +37,8 @@ public class GameManager : MonoBehaviour {
             instance.healthbar = FindObjectOfType<HealthBarController>();
             instance.hudManager = FindObjectOfType<HUDmanager>();
             instance.respawner = FindObjectOfType<RespawnBehavior>();
+            instance.deathSound = FindObjectOfType<DeathSoundBehavior>();
+            instance.deathAudio = GameObject.FindGameObjectWithTag("DeathAudio").GetComponent<AudioSource>();
             Destroy(gameObject);
         }
 
@@ -39,6 +46,9 @@ public class GameManager : MonoBehaviour {
         hudManager = FindObjectOfType<HUDmanager>();
         healthbar = FindObjectOfType<HealthBarController>();
         respawner = FindObjectOfType<RespawnBehavior>();
+        deathSound = FindObjectOfType<DeathSoundBehavior>();
+        deathAudio = GameObject.FindGameObjectWithTag("DeathAudio").GetComponent<AudioSource>();
+        DontDestroyOnLoad(this.deathAudio);
     }
 
     public void IncreaseScore(int amount)
@@ -65,9 +75,26 @@ public class GameManager : MonoBehaviour {
         
     }
 
+    public float IncreaseTimer(float TimeInSec = 0)
+    {
+        if (TimeInSec == 0)
+        {
+            return time = 0;
+        }
+        else
+        {
+            return time += TimeInSec;
+        }
+    }
+
     public void UpdateInformativeText(string text)
     {
-        hudManager.UpdateInformativeText(text);
+        hudManager.UpdateInformation1Text(text);
+    }
+
+    public void UpdateSecondInformativeText(string text)
+    {
+        hudManager.UpdateInformation2Text(text);
     }
 
     public void UpdateLives(int num)
@@ -79,7 +106,6 @@ public class GameManager : MonoBehaviour {
             {
                 //lives decrease, so respawn
                 respawner.RespawnAtCheckpoint();
-                hudManager.UpdateScoresUI();
                 healthbar.UpdateLives();
                 
             }
@@ -143,6 +169,11 @@ public class GameManager : MonoBehaviour {
         
     }
 
+    public void playDeathSound()
+    {
+        deathSound.playDeathSound();
+    }
+
     //reloads the current scene if the lives decrease
     public void ReloadScene()
     {
@@ -157,6 +188,10 @@ public class GameManager : MonoBehaviour {
         {
             healthbar.UpdateHealth(0);
             healthbar.UpdateLives();
+        }
+        if (deathSound != null)
+        {
+            deathAudio.Play();
         }
     
     }
@@ -173,7 +208,6 @@ public class GameManager : MonoBehaviour {
         {
             healthbar.UpdateHealth(amount);
         }
-       
     }
 
 
