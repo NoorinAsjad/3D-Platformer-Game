@@ -7,6 +7,7 @@ public class PlatformLiftTest : MonoBehaviour
 	Vector3 startPos;
 	float sinFloat;
     public float buffer = 1f;
+    public bool sine = true;
 
 	void Start ()
 	{
@@ -17,8 +18,15 @@ public class PlatformLiftTest : MonoBehaviour
 	
 	void Update ()
 	{
-
-		sinFloat = Mathf.Sin (Time.time) / buffer +  0.5f;
+        if (sine)
+        {
+            sinFloat = Mathf.Sin(Time.time) / buffer + 0.5f;
+        }
+        else
+        {
+            sinFloat = Mathf.Cos(Time.time) / buffer + 0.5f;
+        }
+		
 		transform.position = startPos + new Vector3 (0f, sinFloat, 0f);
 	
 	}

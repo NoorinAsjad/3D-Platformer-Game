@@ -8,7 +8,15 @@ public class CountdownTimer : MonoBehaviour {
     public Text Timer;
     // Use this for initialization
     void Start () {
-        StartCoroutine(StartCountdown());
+        if (GameManager.instance.currentLevel == 1)
+        {
+            StartCoroutine(StartCountdown());
+        }
+        else
+        {
+            StartCoroutine(StartCountdown(150f));
+        }
+        
     }
 
     public IEnumerator StartCountdown(float countdownValue = 100f)

@@ -8,12 +8,37 @@ public class TriggerControllers : MonoBehaviour {
         slimeZapSound, lifeIncreasedSound, checkpointSound, diamondSound, levelUpSound;
     RespawnBehavior respawnBehavior;
     int coins;
+    public GameObject panel;
     
 
     // Use this for initialization
-    void Start () {
-        respawnBehavior = FindObjectOfType<RespawnBehavior>();        
+    private void Start () {
+        respawnBehavior = FindObjectOfType<RespawnBehavior>();
+        panel.SetActive(false);
 	}
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (Time.timeScale == 1)
+            {
+                if (!panel.activeSelf)
+                {
+                    panel.SetActive(true);
+                }
+                Time.timeScale = 0;
+            }
+            else
+            {
+                if (panel.activeSelf)
+                {
+                    panel.SetActive(false);
+                }
+                Time.timeScale = 1;
+            }
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -105,11 +130,13 @@ public class TriggerControllers : MonoBehaviour {
             Destroy(other.gameObject);
         }
 
+
         if (other.CompareTag("GameOver"))
         {
             levelUpSound.Play();
             Destroy(other.gameObject);
             GameManager.instance.UpdateInformativeText("Level up!!");
+            GameManager.instance.assignLastLevelScore(GameManager.instance.score);
             StartCoroutine(Pause(1.49f));
             Invoke("increaseLevel", 0.0167f);
         }

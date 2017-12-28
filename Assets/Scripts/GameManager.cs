@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
     public int highScore = 0;
     public int currentLevel = 1;
     public static int HIGHESTLEVEL = 2;
+    int scoreOnLastLevel = 0;
 
     HealthBarController healthbar;
     public float maxHealth = 100f;
@@ -64,6 +65,11 @@ public class GameManager : MonoBehaviour {
         {
             highScore = score;
         }
+    }
+
+    public void assignLastLevelScore(int score)
+    {
+        scoreOnLastLevel = score;
     }
 
     //Assigns initial health to the HealthBarController when respawner is called
@@ -183,7 +189,14 @@ public class GameManager : MonoBehaviour {
     public void ReloadScene()
     {
         health = maxHealth;
-        score = 0;
+        if (currentLevel == 1)
+        {
+            score = 0;
+        }
+        else
+        {
+            score = scoreOnLastLevel;
+        }
         SceneManager.LoadScene("Level " + currentLevel);//currentLevel has to be changed to 2 for level 2 gameplay only
         if (hudManager != null)
         {
