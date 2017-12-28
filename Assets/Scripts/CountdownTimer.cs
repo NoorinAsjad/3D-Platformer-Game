@@ -11,7 +11,7 @@ public class CountdownTimer : MonoBehaviour {
         StartCoroutine(StartCountdown());
     }
 
-    public IEnumerator StartCountdown(float countdownValue = 10f)
+    public IEnumerator StartCountdown(float countdownValue = 100f)
     {
         currCountdownValue = countdownValue;
         while (currCountdownValue >= 0)
@@ -24,6 +24,11 @@ public class CountdownTimer : MonoBehaviour {
             }
 
             currCountdownValue-=0.5f;
+            if (GameManager.instance.stopwatch)
+            {
+                yield return new WaitForSecondsRealtime(15f);
+                GameManager.instance.stopwatchExecution(false);
+            }
             yield return new WaitForSeconds(0.5f);
             if (currCountdownValue == 0)
             {
@@ -32,6 +37,5 @@ public class CountdownTimer : MonoBehaviour {
             }
 
         }
-        
     }
 }

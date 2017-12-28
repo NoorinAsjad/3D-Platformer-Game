@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class KeyBehavior : MonoBehaviour {
-    public GameObject lockedDoor, door;
+    public GameObject lockedDoor;
     Animator anim;
     public AudioSource keyCollectionSound;
     bool open = false;

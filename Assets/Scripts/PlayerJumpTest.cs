@@ -79,21 +79,21 @@ public class PlayerJumpTest : MonoBehaviour
             }
             if (!jumping && hit.collider.CompareTag("Ground"))
             {
-                if (hit.distance > 0.15f)
+                if (hit.distance > 0.1f)
                 {
                     transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y,hit.point.y, 0.25f), transform.position.z);
                 }
             }
             if (!jumping && hit.collider.CompareTag("Death"))
             {
-                if (hit.distance > 0.15f)
+                if (hit.distance > 0.1f)
                 {
                     AddImpact(Vector3.down, -20f);
                     if (!death)
                     {
                         GameManager.instance.UpdateHealth(-GameManager.instance.maxHealth);
                         death = true;
-                        Invoke("deathReset", 3.5f);
+                        Invoke("deathReset", 1f);
                     }
                 }
 

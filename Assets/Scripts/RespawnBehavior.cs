@@ -7,7 +7,6 @@ public class RespawnBehavior : MonoBehaviour {
     Vector3[] checkpoints; // array to store checkpoints
     int checkpointsCollected = 0; // the number of checkpoints collected in current level
     public GameObject CameraObject; // the cameraObject that follows the player around
-    public AudioSource deathSound;
 
     void Start() {
         checkpoints = new Vector3[numCheckpoints];
@@ -27,7 +26,7 @@ public class RespawnBehavior : MonoBehaviour {
     {
         if (checkpointsCollected >= 1 && checkpoints[checkpointsCollected - 1] != Vector3.zero)
         {
-            // play sound, wait till the end, and then respawn
+            
             Invoke("Respawn", 0.3f);
 
         }
@@ -43,7 +42,7 @@ public class RespawnBehavior : MonoBehaviour {
     void Respawn()
     {
         transform.position = checkpoints[checkpointsCollected - 1];
-        CameraObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.99f, transform.position.z);
+        CameraObject.transform.position = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
         GameManager.instance.AssignInitialHealth();
         GameManager.instance.playDeathSound();
     }

@@ -13,7 +13,7 @@ public class HealthBarController : MonoBehaviour {
     private void Start()
     {
         maxHealth = GameManager.instance.maxHealth;
-        health = GameManager.instance.health;
+        health = GameManager.instance.maxHealth;
         UpdateHealth(0f);
         UpdateLives();
     }
@@ -21,6 +21,7 @@ public class HealthBarController : MonoBehaviour {
     public void AssignInitialHealth()
     {
         health = GameManager.instance.maxHealth;
+        GameManager.instance.health = health;
         HealthFinished = false;
     }
 
@@ -36,16 +37,21 @@ public class HealthBarController : MonoBehaviour {
         if (!HealthFinished)
         {
             float newHealth = mapToMaxHealth(health + amount);
+            health += amount;
             if (newHealth > 1)
             {
                 newHealth = 1;
+                health = maxHealth;
             }
             else if (newHealth < 0)
             {
                 newHealth = 0;
+                health = 0;
             }
             bar.fillAmount = newHealth;
-            health += amount;
+            GameManager.instance.health = health;
+            
+            Debug.Log("Healthbar health is " + health);
             if (health <= 0)
             {
                 HealthFinished = true;

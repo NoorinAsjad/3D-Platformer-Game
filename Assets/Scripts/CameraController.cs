@@ -27,11 +27,13 @@ public class CameraController : MonoBehaviour {
     {
 
         zoom = -1.2f;
+        //playerCam.transform.localPosition = new Vector3(0, 0, zoom);
+        centerPoint.localRotation = Quaternion.Euler(0, 180, 0);
 
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
         zoom += Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;

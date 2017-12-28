@@ -24,6 +24,7 @@ public class TriggerControllers : MonoBehaviour {
             coins++;
             coinSound.Play();
             GameManager.instance.IncreaseScore(10);
+            
 
             if (coins == 6)
             {
@@ -52,6 +53,21 @@ public class TriggerControllers : MonoBehaviour {
         {
             slimeZapSound.Play();
             GameManager.instance.UpdateHealth(-10f);
+        }
+
+        if (other.CompareTag("Tile"))
+        {
+            GameManager.instance.UpdateHealth(-20f);
+            slimeZapSound.Play();
+        }
+
+        if (other.CompareTag("Stopwatch"))
+        {
+            coinSound.Play();
+            GameManager.instance.stopwatchExecution(true);
+            Destroy(other.gameObject);
+            GameManager.instance.UpdateSecondInformativeText("Timer paused for 15 seconds!");
+
         }
 
         if (other.CompareTag("Heart"))
@@ -94,7 +110,8 @@ public class TriggerControllers : MonoBehaviour {
             levelUpSound.Play();
             Destroy(other.gameObject);
             GameManager.instance.UpdateInformativeText("Level up!!");
-            Invoke("increaseLevel", 0.9f);
+            StartCoroutine(Pause(1.49f));
+            Invoke("increaseLevel", 0.0167f);
         }
 
 
@@ -110,4 +127,15 @@ public class TriggerControllers : MonoBehaviour {
         GameManager.instance.IncreaseTimer();
     }
     
+    
+    private IEnumerator Pause(float p)
+    {
+        Time.timeScale = 0f;
+        float pauseEndTime = Time.realtimeSinceStartup + p;
+        while (Time.realtimeSinceStartup < pauseEndTime)
+        {
+            yield return 0;
+        }
+        Time.timeScale = 1;
+    }
 }

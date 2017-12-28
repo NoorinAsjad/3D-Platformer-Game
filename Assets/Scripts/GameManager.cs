@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public int lives = 3;
     public int highScore = 0;
     public int currentLevel = 1;
-    public static int HIGHESTLEVEL = 1;
+    public static int HIGHESTLEVEL = 2;
 
     HealthBarController healthbar;
     public float maxHealth = 100f;
@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour {
     AudioSource deathAudio;
 
     public float time;
+
+    public bool stopwatch=false;
 
     public static GameManager instance;
 
@@ -38,7 +40,6 @@ public class GameManager : MonoBehaviour {
             instance.hudManager = FindObjectOfType<HUDmanager>();
             instance.respawner = FindObjectOfType<RespawnBehavior>();
             instance.deathSound = FindObjectOfType<DeathSoundBehavior>();
-            instance.deathAudio = GameObject.FindGameObjectWithTag("DeathAudio").GetComponent<AudioSource>();
             Destroy(gameObject);
         }
 
@@ -47,8 +48,7 @@ public class GameManager : MonoBehaviour {
         healthbar = FindObjectOfType<HealthBarController>();
         respawner = FindObjectOfType<RespawnBehavior>();
         deathSound = FindObjectOfType<DeathSoundBehavior>();
-        deathAudio = GameObject.FindGameObjectWithTag("DeathAudio").GetComponent<AudioSource>();
-        DontDestroyOnLoad(this.deathAudio);
+        
     }
 
     public void IncreaseScore(int amount)
@@ -87,6 +87,11 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void stopwatchExecution(bool stop)
+    {
+        stopwatch = stop;
+    }
+
     public void UpdateInformativeText(string text)
     {
         hudManager.UpdateInformation1Text(text);
@@ -114,7 +119,7 @@ public class GameManager : MonoBehaviour {
                 //lives increase
                 if (healthbar != null)
                 {
-                    Debug.Log("UpdateLives called");
+
                     healthbar.UpdateLives();
                 }
             }
@@ -179,7 +184,7 @@ public class GameManager : MonoBehaviour {
     {
         health = maxHealth;
         score = 0;
-        SceneManager.LoadScene("Level " + currentLevel);
+        SceneManager.LoadScene("Level " + currentLevel);//currentLevel has to be changed to 2 for level 2 gameplay only
         if (hudManager != null)
         {
             hudManager.UpdateScoresUI();
@@ -191,7 +196,7 @@ public class GameManager : MonoBehaviour {
         }
         if (deathSound != null)
         {
-            deathAudio.Play();
+            Invoke("playDeathSound", 0.1f);
         }
     
     }
