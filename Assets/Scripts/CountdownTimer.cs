@@ -14,7 +14,7 @@ public class CountdownTimer : MonoBehaviour {
         }
         else
         {
-            StartCoroutine(StartCountdown(150f));
+            StartCoroutine(StartCountdown(120f));
         }
         
     }

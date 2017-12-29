@@ -5,7 +5,7 @@ public class SlimeMoveTest : MonoBehaviour {
     public float translationBuff = 60;
     public float rotationBuff = 1.5f;
 
-	void Update () {
+	void FixedUpdate () {
 
 		transform.Translate (Vector3.forward / translationBuff);
 		transform.Rotate (Vector3.up * rotationBuff);

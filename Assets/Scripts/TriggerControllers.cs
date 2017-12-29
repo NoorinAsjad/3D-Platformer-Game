@@ -46,7 +46,11 @@ public class TriggerControllers : MonoBehaviour {
         if (other.CompareTag("Coin"))
         {
             Destroy(other.gameObject);
-            coins++;
+            if (!GameManager.instance.stopwatch)
+            {
+                coins++;
+            }
+            
             coinSound.Play();
             GameManager.instance.IncreaseScore(10);
             
@@ -71,7 +75,7 @@ public class TriggerControllers : MonoBehaviour {
             Destroy(other.gameObject);
             firstAidSound.Play();
             GameManager.instance.UpdateInformativeText("Health up!");
-            GameManager.instance.UpdateHealth(17f);
+            GameManager.instance.UpdateHealth(20f);
         }
 
         if (other.CompareTag("Slime"))

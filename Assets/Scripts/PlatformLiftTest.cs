@@ -14,7 +14,7 @@ public class PlatformLiftTest : MonoBehaviour
 
 		startPos = transform.position;
 	
-	}
+	} 
 	
 	void Update ()
 	{
